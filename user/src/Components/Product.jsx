@@ -3,6 +3,8 @@ import styled from "styled-components";
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import ZoomInOutlinedIcon from '@mui/icons-material/ZoomInOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import {Link} from 'react-router-dom';
+
 
 
 const Padding = styled.div`
@@ -67,7 +69,9 @@ function Product({ item }) {
                 <ShoppingCartOutlinedIcon />
             </Icon>
             <Icon>
-                <ZoomInOutlinedIcon />
+                <Link to={`/product/${item._id}`}>
+                  <ZoomInOutlinedIcon />
+                </Link>
             </Icon>
             <Icon>
                 <FavoriteBorderOutlinedIcon />

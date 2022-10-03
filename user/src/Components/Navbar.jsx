@@ -4,6 +4,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Badge } from '@mui/material';
 import {mobileScreen} from '../Helper';
+import {useSelector} from 'react-redux';
+import {Link } from 'react-router-dom';
 
 const Container = styled.div`
     height: 90px;
@@ -68,6 +70,8 @@ const Menu = styled.div`
 `;
 
 function Navbar() {
+  const quantity = useSelector(state => state.cart.quantity)
+  
   return (
     <Container>
         <Padding>
@@ -79,16 +83,24 @@ function Navbar() {
                 </SearchContainer>
             </Left>
             <Center>
+              <Link to='/'>
                 <Logo>VIRTUAL SPACE</Logo>
+              </Link>
             </Center>
             <Right >
+              <Link to='/register'>
                 <Menu >REGISTER</Menu>
+              </Link>
+              <Link to='/login'>
                 <Menu >SIGN IN</Menu>
-                <Menu >
-                    <Badge badgeContent={4} color="primary">
-                        <ShoppingCartIcon />
-                    </Badge>
-                </Menu>
+              </Link>
+                <Link to='/cart'>
+                  <Menu >
+                      <Badge badgeContent={quantity} color="primary">
+                          <ShoppingCartIcon />
+                      </Badge>
+                  </Menu>
+                </Link>
             </Right>
         </Padding>
     </Container>

@@ -1,6 +1,8 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from "styled-components";
 import { mobileScreen } from '../Helper';
+import { login } from '../redux/user';
+import { useDispatch, useSelector } from "react-redux";
 
 const Container = styled.div`
   width: 100vw;
@@ -54,6 +56,10 @@ const Button = styled.button`
   color: white;
   cursor: pointer;
   margin: 20px 0px;
+  &:disabled{
+    color: skyblue;
+    cursor: not-allowed;
+  }
 `;
 
 const Link = styled.a`
@@ -62,7 +68,21 @@ const Link = styled.a`
   cursor: pointer;
 `;
 
+const Error = styled.span`
+  color:red;
+`
+
 const Login = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const {isFetching, error} = useSelector((state)=> state.user)
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    login(dispatch, {username, password})
+  }
+
   return (
     <Container>
       <Padding>
@@ -70,9 +90,10 @@ const Login = () => {
         <Box>
             <Title>SIGN IN</Title>
             <Form>
-            <Input placeholder="Username" />
-            <Input placeholder="Password" />
-            <Button>LOGIN</Button>
+            <Input placeholder="Username" onChange={(e)=> setUsername(e.target.value)}/>
+            <Input placeholder="Password" onChange={(e)=> setPassword(e.target.value)}/>
+            <Button onClick={handleLogin} disabled={isFetching}>LOGIN</Button>
+            {error && <Error>Incorrect username and password</Error>}
             <Link>DO YOU NOT REMEMBER THE PASSWORD?</Link>
             <Link>CREATE A NEW ACCOUNT</Link>
             </Form>

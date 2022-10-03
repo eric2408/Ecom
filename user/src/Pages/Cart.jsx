@@ -7,6 +7,15 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import { Image } from '@mui/icons-material';
 import { mobileScreen } from '../Helper';
+import cart from '../redux/cart';
+import { useSelector } from "react-redux";
+import StripeCheckout from "react-stripe-checkout";
+import { useEffect, useState } from "react";
+import { userRequest } from "../requestAxios";
+import { useNavigate } from 'react-router-dom';
+
+
+const publicKey = "pk_test_51LkzBrHoffqkiVupSdU4Fbe8SwocQzAnycibSRBvY7llyFe8jqxflhDqhxikcwItfswSa5lk8a0ewH2vld9BzsmB00U4HdhCNB";
 
 const Container = styled.div``;
 
@@ -131,6 +140,31 @@ const Button = styled.button`
 `;
 
 const Cart = () => {
+  const cart = useSelector(state => state.cart);
+  const [token, setToken] = useState(null);
+  const navigate = useNavigate();
+
+  const onToken = (token) => {
+    setToken(token)
+  }
+
+  useEffect(()=> {
+    const req = async () => {
+     try{
+      const response = await userRequest.post('/checkout/payment', {
+        tokenId: token.id,
+        amount: cart.total *100
+      });
+      navigate('/success', { state: {stripeData: response.data, products: cart }});
+     } catch (e) {
+      console.log(e)
+     } 
+    };
+
+    token && req();
+  }, [token, cart.total, navigate])
+
+
   return (
     <Container>
       <Announcement />
@@ -139,63 +173,39 @@ const Cart = () => {
         <Title>Shopping Cart</Title>
         <Orders>
           <Information>
+            {cart.products.map(product => (
             <Product>
               <Detail>
-                <Img src="https://hips.hearstapps.com/vader-prod.s3.amazonaws.com/1614188818-TD1MTHU_SHOE_ANGLE_GLOBAL_MENS_TREE_DASHERS_THUNDER_b01b1013-cd8d-48e7-bed9-52db26515dc4.png?crop=1xw:1.00xh;center,top&resize=480%3A%2A" />
+                <Img src={product.img} />
                 <Description>
                   <Name>
-                    <b>Product:</b> JESSIE THUNDER SHOES
+                    <b>Product:</b> {product.title}
                   </Name>
                   <Id>
-                    <b>ID:</b> 93813718293
+                    <b>ID:</b> {product._id}
                   </Id>
-                  <Color color="black" />
+                  <Color color={product.color} />
                   <Size>
-                    <b>Size:</b> 37.5
+                    <b>Size:</b> {product.size}
                   </Size>
                 </Description>
               </Detail>
               <Price>
                 <AmountContainer>
                   <AddIcon />
-                  <Amount>2</Amount>
+                  <Amount>{product.quantity}</Amount>
                   <RemoveIcon />
                 </AmountContainer>
-                <ProductPrice>$ 30</ProductPrice>
+                <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
               </Price>
-            </Product>
+            </Product>))}
             <Hr />
-            <Product>
-              <Detail>
-                <Img src="https://i.pinimg.com/originals/2d/af/f8/2daff8e0823e51dd752704a47d5b795c.png" />
-                <Description>
-                  <Name>
-                    <b>Product:</b> HAKURA T-SHIRT
-                  </Name>
-                  <Id>
-                    <b>ID:</b> 93813718293
-                  </Id>
-                  <Color color="gray" />
-                  <Size>
-                    <b>Size:</b> M
-                  </Size>
-                </Description>
-              </Detail>
-              <Price>
-                <AmountContainer>
-                  <AddIcon />
-                  <Amount>1</Amount>
-                  <RemoveIcon />
-                </AmountContainer>
-                <ProductPrice>$ 20</ProductPrice>
-              </Price>
-            </Product>
           </Information>
           <OrderSummary>
             <STitle>ORDER SUMMARY</STitle>
             <SItem>
               <SItemText>Subtotal</SItemText>
-              <SItemPrice>$ 80</SItemPrice>
+              <SItemPrice>$ {cart.total}</SItemPrice>
             </SItem>
             <SItem>
               <SItemText>Estimated Shipping</SItemText>
@@ -207,9 +217,20 @@ const Cart = () => {
             </SItem>
             <SItem type="total">
               <SItemText>Total</SItemText>
-              <SItemPrice>$ 80</SItemPrice>
+              <SItemPrice>$ {cart.total}</SItemPrice>
             </SItem>
-            <Button>CHECKOUT NOW</Button>
+            <StripeCheckout
+              name="Lama Shop"
+              image="https://avatars.githubusercontent.com/u/1486366?v=4"
+              billingAddress
+              shippingAddress
+              description={`Your total is $${cart.total}`}
+              amount={cart.total * 100}
+              token={onToken}
+              stripeKey={publicKey}
+            >
+              <Button>CHECKOUT NOW</Button>
+            </StripeCheckout>
           </OrderSummary>
         </Orders>
       </Padding>
