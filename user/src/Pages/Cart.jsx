@@ -13,20 +13,25 @@ import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestAxios";
 import { useNavigate } from 'react-router-dom';
-
+import robo from '../img/sq.png';
+import { addOne, subtractOne, removeOne } from '../redux/cart';
+import { useDispatch } from 'react-redux';
 
 const publicKey = "pk_test_51LkzBrHoffqkiVupSdU4Fbe8SwocQzAnycibSRBvY7llyFe8jqxflhDqhxikcwItfswSa5lk8a0ewH2vld9BzsmB00U4HdhCNB";
 
-const Container = styled.div``;
+const Container = styled.div`
+`;
 
 const Padding = styled.div`
-  padding: 20px;
+  padding: 50px;
+  margin-bottom: 100px;
   ${mobileScreen({ padding: "10px" })}
 `;
 
 const Title = styled.h1`
   font-weight: 300;
   text-align: center;
+  margin-bottom: 100px;
 `;
 
 
@@ -41,6 +46,7 @@ const Information = styled.div`
 `;
 
 const Product = styled.div`
+margin-bottom: 50px;
   display: flex;
   justify-content: space-between;
   ${mobileScreen({ flexDirection: "column" })}
@@ -131,18 +137,36 @@ const SItemText = styled.span``;
 
 const SItemPrice = styled.span``;
 
+
+
 const Button = styled.button`
   width: 100%;
   padding: 10px;
   background-color: black;
   color: white;
   font-weight: 600;
+  cursor: pointer;
 `;
+
+const ButtonTwo = styled.button`
+  margin-top: 20px;
+  padding: 15px;
+  border: 2px solid #6f50e6;
+  background-color: white;
+  cursor: pointer;
+  font-weight: 500;
+  &:hover {
+    background-color: #6f50e6;
+    color: white;
+  }
+`
 
 const Cart = () => {
   const cart = useSelector(state => state.cart);
+  console.log(cart)
   const [token, setToken] = useState(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onToken = (token) => {
     setToken(token)
@@ -164,6 +188,19 @@ const Cart = () => {
     token && req();
   }, [token, cart.total, navigate])
 
+
+  const handleClick = (sign, id) => {
+      if(sign === 'addition'){
+            dispatch(addOne({id}))
+    
+      } else if(sign === 'subtract'){
+            dispatch(subtractOne({id}))
+      }
+  }
+
+  const removeFromBasket = (id) => {
+    dispatch(removeOne({ id }))
+  }
 
   return (
     <Container>
@@ -192,12 +229,14 @@ const Cart = () => {
               </Detail>
               <Price>
                 <AmountContainer>
-                  <AddIcon />
+                  <AddIcon onClick={()=> handleClick('addition', product._id)}/>
                   <Amount>{product.quantity}</Amount>
-                  <RemoveIcon />
+                  <RemoveIcon onClick={()=> handleClick('subtract', product._id)}/>
                 </AmountContainer>
-                <ProductPrice>$ {product.price * product.quantity}</ProductPrice>
+                <ProductPrice>$ {cart.total}</ProductPrice>
+                <ButtonTwo onClick={()=> removeFromBasket(product._id)}>Remove</ButtonTwo>
               </Price>
+
             </Product>))}
             <Hr />
           </Information>
@@ -209,19 +248,19 @@ const Cart = () => {
             </SItem>
             <SItem>
               <SItemText>Estimated Shipping</SItemText>
-              <SItemPrice>$ 5.90</SItemPrice>
+              <SItemPrice>$ 3.50</SItemPrice>
             </SItem>
             <SItem>
               <SItemText>Shipping Discount</SItemText>
-              <SItemPrice>$ -5.90</SItemPrice>
+              <SItemPrice>$ -3.50</SItemPrice>
             </SItem>
             <SItem type="total">
               <SItemText>Total</SItemText>
               <SItemPrice>$ {cart.total}</SItemPrice>
             </SItem>
             <StripeCheckout
-              name="Lama Shop"
-              image="https://avatars.githubusercontent.com/u/1486366?v=4"
+              name="Virtual Space"
+              image={robo}
               billingAddress
               shippingAddress
               description={`Your total is $${cart.total}`}

@@ -4,12 +4,30 @@ import { popularProducts } from '../data';
 import Product from './Product';
 import axios from 'axios';
 
+
+const Section = styled.div`
+  background-color: white;
+  padding-top: 3rem;
+  padding-bottom: 5rem;
+`
+
 const Container = styled.div`
   padding: 20px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  background-color: white;
 `;
+
+const Section_head = styled.div`
+    margin-bottom: 4rem;
+    text-align: center;
+`
+
+const Header = styled.h2`
+    color:  #14141f;
+    font-size: 36px;
+`
 
 
 function ProductList({cat, filters, sort}) {
@@ -57,10 +75,16 @@ function ProductList({cat, filters, sort}) {
 
 
   return (
-    <Container >
-        {cat ? filteredProducts.map((i)=> <Product item={i} key={i._id} />)
-            : products.slice(0,8).map((i)=> <Product item={i} key={i._id} />)}
-    </Container>
+    <Section>
+      <Section_head>
+        <Header>Popular Products</Header>
+      </Section_head>
+      <Container >
+          {cat ? filteredProducts.map((i)=> <Product item={i} key={i._id} />)
+              : products.slice(0,8).map((i)=> <Product item={i} key={i._id} />)}
+      </Container>
+    </Section>
+
   )
 }
 

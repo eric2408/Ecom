@@ -25,8 +25,9 @@ const Padding = styled.div`
 
 const Container = styled.div`
   flex: 1;
-  margin: 5px;
-  min-width: 280px;
+  margin: 10px;
+  min-width: 400px;
+  max-width: 400px;
   height: 350px;
   display: flex;
   align-items: center;
@@ -55,7 +56,7 @@ const Icon = styled.div`
   margin: 10px;
   transition: all 1s ease;
   &:hover {
-    color: skyblue;
+    color: #6f50e6;
     transform: scale(1.2);
   }
 `;
@@ -69,7 +70,7 @@ function Product({ item }) {
                 <ShoppingCartOutlinedIcon />
             </Icon>
             <Icon>
-                <Link to={`/product/${item._id}`}>
+                <Link  style={{textDecoration: 'none', color: 'black'}} to={`/product/${item._id}`}>
                   <ZoomInOutlinedIcon />
                 </Link>
             </Icon>

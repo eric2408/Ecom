@@ -14,16 +14,20 @@ const user = createSlice({
     },
     loginSuccess: (state, action) => {
       state.isFetching = false;
+      state.error = false;
       state.currentUser = action.payload;
     },
     loginFailure: (state) => {
       state.isFetching = false;
       state.error = true;
     },
+    logOut: (state) => {
+      state.currentUser = null;
+    },
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure } = user.actions;
+export const { loginStart, loginSuccess, loginFailure, logOut } = user.actions;
 export default user.reducer;
 
 
@@ -36,3 +40,12 @@ export const login = async(dispatch, user) =>{
         dispatch(loginFailure())
     }
 }
+
+export const logout = async(dispatch, user) => {
+  try{
+    dispatch(logOut());
+  } catch(e){
+    console.log(e)
+  }
+}
+

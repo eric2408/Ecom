@@ -1,24 +1,29 @@
+import {FaShippingFast, FaShieldAlt, FaTags, FaCreditCard} from 'react-icons/fa';
+import sliderOne from './video/virtual.mp4'
+import sliderThree from './video/robo.mp4'
+import sliderTwo from './img/astro.png'
+
 export const sliderItems = [
     {
       id: 1,
-      img: "https://venturebeat.com/wp-content/uploads/2021/09/virtual_reality.jpg?fit=3840%2C2160&strip=all",
+      vid: sliderThree,
     },
     {
       id: 2,
-      img: "https://hbr.org/resources/images/article_assets/2022/01/Jan22_03_1270015925.jpg",
+      vid: sliderOne,
     },
     {
       id: 3,
-      img: "https://altagram.com/wp-content/uploads/2022/02/metaverse.jpg",
+      img: sliderTwo,
     },
   ];
 
   export const categories = [
     {
       id: 1,
-      img: "https://hips.hearstapps.com/hmg-prod/images/oculus-quest-2-14368-1631656107.jpg",
+      img: "https://www.pcgamesn.com/wp-content/sites/pcgamesn/2022/09/Oculus-Quest-gets-Meta-Quest-2-hand-tracking-2.jpg",
       title: "VR GEARS",
-      cat:"Tech"
+      cat:"VR GEARS"
     },
     {
       id: 2,
@@ -28,43 +33,39 @@ export const sliderItems = [
     },
     {
       id: 3,
-      img: "https://media.wired.com/photos/5daf96f208f85000087191f3/191:100/w_2580,c_limit/Audio-Technica-ATH-M20x-SOURCE-Audio-Technica.jpg",
+      img: "https://www.beatsbydre.com/content/dam/beats/web/product/earphones/powerbeats-pro/plp/bbd.plpasset.earbuds.pbpro-v2.jpg.large.2x.jpg",
       title: "ACCESSORIES",
       cat:"Accessories"
     },
   ];
 
-  export const popularProducts = [
+
+
+
+  
+export const featureData = [
     {
-      id:1,
-      img:"https://target.scene7.com/is/image/Target/GUEST_556aed45-98e1-474a-b6be-acf3826c36f5?wid=488&hei=488&fmt=pjpeg",
+        id: 1,
+        icon: <FaShippingFast />,
+        title: "Express Delivery",
+        info: "Ships within 24 Hours",
     },
     {
-      id:2,
-      img:"https://m.media-amazon.com/images/I/71Ujzg47ogL.jpg",
+        id: 2,
+        icon: <FaShieldAlt />,
+        title: "Safe Purchases",
+        info: "Full Refund",
     },
     {
-      id:3,
-      img:"https://i.ebayimg.com/images/g/SRoAAOSwTFNif8fd/s-l500.jpg",
+        id: 3,
+        icon: <FaTags />,
+        title: "Exciting Deals",
+        info: "On all prepaid orders",
     },
     {
-      id:4,
-      img:"https://c1.staticflickr.com/9/8416/29447996704_9f10372a07.jpg",
+        id: 4,
+        icon: <FaCreditCard />,
+        title: "Secure Payments",
+        info: "Through Stripe and Paypal",
     },
-    {
-      id:5,
-      img:"https://m.media-amazon.com/images/I/61Uy4GVp-UL._AC_SY450_.jpg",
-    },
-    {
-      id:6,
-      img:"https://media.graphassets.com/9NFzjzfOQtOY0pbmyUO5",
-    },
-    {
-      id:7,
-      img:"https://cdn.shopify.com/s/files/1/0240/9337/products/GOWork1.jpg?v=1663960823&width=1445",
-    },
-    {
-      id:8,
-      img:"https://idealgamekeys.com/wp-content/uploads/2021/02/Concrete-Genie-PS4-idealgamekeys.com_.jpg",
-    },
-  ]
+];

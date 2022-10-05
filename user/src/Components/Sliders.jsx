@@ -4,16 +4,20 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import styled from "styled-components";
 import { sliderItems } from '../data';
+import {Link } from 'react-router-dom';
+
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: 100%;
   display: flex;
   position: relative;
   overflow: hidden;
+  margin: 0;
 `;
 
 const Arrows = styled.div`
+  color: white;
   width: 50px;
   height: 50px;
   display: flex;
@@ -45,7 +49,7 @@ const Slide = styled.div`
 `;
 
 const Img = styled.img`
-  height: 90%;
+  height: 100%;
   width: 100%;
 `;
 
@@ -69,11 +73,22 @@ function Sliders() {
             <KeyboardArrowLeftIcon style={{ height: '100px', width:'100px' }}/>
         </Arrows>
         <Padding Index={Index}>
-            {sliderItems.map(i => (
+            {sliderItems.map(i => {
+                {return i.img ?
                 <Slide key={i.id}>
-                    <Img src={i.img}/>
-                </Slide>
-            ))}
+                  <Link style={{textDecoration: 'none'}} to='/products'>
+                      <Img src={i.img}/>
+                  </Link>    
+                </Slide>:
+                  <Slide key={i.id}>
+                    <Link style={{textDecoration: 'none'}} to='/products'>
+                      <video controls autoPlay loop> 
+                        <source src={i.vid} type='video/mp4'></source>
+                      </video>
+                    </Link>
+                  </Slide>
+                }
+            })}
         </Padding>
         <Arrows direction='right' onClick={() => handleClick('right')}>
             <KeyboardArrowRightIcon style={{ height: '100px', width:'100px' }}/>

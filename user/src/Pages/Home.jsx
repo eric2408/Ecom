@@ -6,6 +6,7 @@ import Navbar from '../Components/Navbar'
 import ProductList from '../Components/ProductList'
 import Sliders from '../Components/Sliders'
 import Subscription from '../Components/Subscription'
+import Features from '../Components/Features'
 
 
 function Home() {
@@ -14,6 +15,7 @@ function Home() {
         <Announcement />
         <Navbar />
         <Sliders />
+        <Features />
         <Categories />
         <ProductList />
         <Subscription />

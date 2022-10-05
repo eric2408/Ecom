@@ -8,6 +8,7 @@ import Footer from '../Components/Footer';
 import { mobileScreen } from '../Helper';
 import { useLocation } from "react-router";
 import {useState} from 'react';
+import Features from '../Components/Features'
 
 const Container = styled.div`
 `;
@@ -68,8 +69,6 @@ function Products() {
             <Option>black</Option>
             <Option>red</Option>
             <Option>blue</Option>
-            <Option>yellow</Option>
-            <Option>green</Option>
           </Select>
           <Select name="size" onChange={handleFilters}>
             <Option disabled>Size</Option>
@@ -84,12 +83,13 @@ function Products() {
           <Text>Sort Products:</Text>
           <Select onChange={e=>setSort(e.target.value)}>
             <Option value="newest">Newest</Option>
-            <Option value="ascending">Price (asc)</Option>
-            <Option value="descending">Price (desc)</Option>
+            <Option value="ascending">Low to High</Option>
+            <Option value="descending">High to Low</Option>
           </Select>
         </Filter>
       </FilterContainer>
       <ProductList cat={cat} filters={filters} sort={sort}/>
+      <Features />
       <Subscription />
       <Footer />
   </Container>

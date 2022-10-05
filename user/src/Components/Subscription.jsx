@@ -5,7 +5,8 @@ import { mobileScreen } from '../Helper';
 
 const Container = styled.div`
   height: 40vh;
-  background-color: lightblue;
+  background-color: #14141f;
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,26 +27,29 @@ const InputContainer = styled.div`
   display: flex;
   justify-content: space-between;
   border: 1px solid lightgray;
+  border-radius: 15px;
   ${mobileScreen({ width: "80%" })}
 `;
 
 const Input = styled.input`
   border: none;
-  flex: 8;
+  flex: 7;
   padding-left: 20px;
   font-size: 15px;
+  border-radius: 15px;
 `;
 
 const Button = styled.button`
   flex: 1;
   border: none;
-  background-color: skyblue;
+  background-color: #6f50e6;
   color: white;
   display: flex;
   align-items: center;
   font-size: 15px;
   justify-content: center;
   cursor: pointer;
+  border-radius: 15px;
 `;
 
 function Subscription() {

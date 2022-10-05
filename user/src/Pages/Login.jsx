@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { mobileScreen } from '../Helper';
 import { login } from '../redux/user';
 import { useDispatch, useSelector } from "react-redux";
+import {Link} from 'react-router-dom';
 
 const Container = styled.div`
   width: 100vw;
@@ -10,12 +11,13 @@ const Container = styled.div`
   background-size: cover;
   display: flex;
   justify-content: center;
+  background-color: #14141f;
 `;
 
 const Padding = styled.div`
   width: 25%;
   padding: 20px;
-  background-color: white;
+  background-color: #14141f;
   ${mobileScreen({ width: "75%" })}
 `;
 
@@ -23,16 +25,18 @@ const Logo = styled.h1`
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    color: #6f50e6;
 `
 
 const Box = styled.div`
-    border: 1mm solid grey;
+    border: 1mm solid white;
 `
 
 const Title = styled.h1`
   margin: 15px 20px;
   font-size: 24px;
   font-weight: 300;
+  color: white;
 `;
 
 const Form = styled.form`
@@ -52,20 +56,21 @@ const Button = styled.button`
   width: 40%;
   border: none;
   padding: 15px 20px;
-  background-color: skyblue;
+  background-color: #6f50e6;
   color: white;
   cursor: pointer;
   margin: 20px 0px;
   &:disabled{
-    color: skyblue;
+    color: #6f50e6;
     cursor: not-allowed;
   }
 `;
 
-const Link = styled.a`
+const Links = styled.div`
   margin: 5px 0px;
   font-size: 12px;
   cursor: pointer;
+  color: white;
 `;
 
 const Error = styled.span`
@@ -86,7 +91,9 @@ const Login = () => {
   return (
     <Container>
       <Padding>
-        <Logo>VIRTUAL SPACE</Logo>
+        <Link style={{textDecoration: 'none'}} to='/'>
+          <Logo>VIRTUAL SPACE</Logo>
+        </Link>
         <Box>
             <Title>SIGN IN</Title>
             <Form>
@@ -94,8 +101,11 @@ const Login = () => {
             <Input placeholder="Password" onChange={(e)=> setPassword(e.target.value)}/>
             <Button onClick={handleLogin} disabled={isFetching}>LOGIN</Button>
             {error && <Error>Incorrect username and password</Error>}
-            <Link>DO YOU NOT REMEMBER THE PASSWORD?</Link>
-            <Link>CREATE A NEW ACCOUNT</Link>
+            <Links>DO YOU NOT REMEMBER THE PASSWORD?</Links>
+            <Link style={{textDecoration: 'none'}} to='/register'>
+              <Links>CREATE A NEW ACCOUNT</Links>
+            </Link>
+
             </Form>
         </Box>
       </Padding>

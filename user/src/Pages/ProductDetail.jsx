@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Announcement from '../Components/Announcement';
 import Footer from '../Components/Footer';
 import Navbar from '../Components/Navbar';
-import Subscription from '../Components/Subscription';
+import Features from '../Components/Features'
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import { mobileScreen } from '../Helper';
@@ -25,8 +25,8 @@ const ImgContainer = styled.div`
 `;
 
 const Img = styled.img`
-  width: 100%;
-  height: 90vh;
+  width: 80vh;
+  height: 80vh;
   object-fit: cover;
   ${mobileScreen({ height: "40vh" })}
 `;
@@ -111,12 +111,12 @@ const Amount = styled.span`
 
 const Button = styled.button`
   padding: 15px;
-  border: 2px solid skyblue;
+  border: 2px solid #6f50e6;
   background-color: white;
   cursor: pointer;
   font-weight: 500;
   &:hover {
-    background-color: skyblue;
+    background-color: #6f50e6;
     color: white;
   }
 `;
@@ -151,7 +151,8 @@ function ProductDetail() {
   }
 
   const handleAddCart =()=>{
-    dispatch(addProduct({... product, quantity, color, size }))
+    dispatch(addProduct({ ...product, quantity, color, size }))
+
   }
 
   return (
@@ -194,7 +195,7 @@ function ProductDetail() {
                 </Quantity>
             </InfoContainer>
         </Padding>
-        <Subscription />
+        <Features />
         <Footer />
   </Container>
   )

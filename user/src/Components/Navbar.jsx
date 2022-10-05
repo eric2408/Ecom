@@ -4,15 +4,23 @@ import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Badge } from '@mui/material';
 import {mobileScreen} from '../Helper';
-import {useSelector} from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import {Link } from 'react-router-dom';
+import { logout } from '../redux/user';
+import { emptyCart } from '../redux/cart';
+
 
 const Container = styled.div`
-    height: 90px;
+    height: 100px;
+    background-color: #14141f;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 999;
     ${mobileScreen({height: '50px'})}
 `
 const Padding = styled.div`
-  padding: 10px 20px;
+  padding: 30px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -32,15 +40,18 @@ const LangOption = styled.span`
 `;
 
 const SearchContainer = styled.div`
-  border: 0.5px solid lightgray;
   display: flex;
   align-items: center;
   margin-left: 25px;
-  padding: 5px;
-`;
+  border-radius:14px;
+  `;
 
 const SearchBox = styled.input`
   border: none;
+  height:30px;
+  font-size:16px;
+  border-radius:15px;
+  padding-left: 20px;
   ${mobileScreen({width: '50px'})}
 `;
 
@@ -51,6 +62,7 @@ const Center = styled.div`
 
 const Logo = styled.h1`
   font-weight: bold;
+  color: #6f50e6;
   ${mobileScreen({ fontSize: "24px" })}
 `;
 
@@ -65,12 +77,27 @@ const Right = styled.div`
 const Menu = styled.div`
   font-size: 14px;
   cursor: pointer;
+  :hover{
+    color: #6f50e6;
+  }
   margin-left: 25px;
   ${mobileScreen({ fontSize: "12px", marginLeft: "10px" })}
 `;
 
 function Navbar() {
   const quantity = useSelector(state => state.cart.quantity)
+  const user = useSelector(state => state.user.currentUser);
+  console.log(user)
+  const dispatch = useDispatch();
+
+
+  const handleAuthentication = () => {
+    if(user){
+      logout(dispatch, user)
+      emptyCart(dispatch)
+    }
+}
+  
   
   return (
     <Container>
@@ -78,25 +105,25 @@ function Navbar() {
             <Left >
                 <LangOption >EN</LangOption>
                 <SearchContainer >
-                    <SearchBox />
-                    <SearchIcon  style={{ color: "gray", fontSize: 16 }}/>
+                    <SearchBox placeholder="search"/>
+                    <SearchIcon  style={{ color: "white", 'marginLeft': 8, fontSize: 20, cursor: 'pointer' }}/>
                 </SearchContainer>
             </Left>
             <Center>
-              <Link to='/'>
+              <Link style={{textDecoration: 'none'}} to='/'>
                 <Logo>VIRTUAL SPACE</Logo>
               </Link>
             </Center>
             <Right >
-              <Link to='/register'>
-                <Menu >REGISTER</Menu>
+              <Link style={{textDecoration: 'none', color: 'white'}} to={!user && '/register'}>
+                <Menu>{user ? `HELLO ${user?.username}` : 'REGISTER'} </Menu>
               </Link>
-              <Link to='/login'>
-                <Menu >SIGN IN</Menu>
+              <Link style={{textDecoration: 'none', color: 'white'}} to={!user && '/login'}>
+                <Menu onClick={() => handleAuthentication()} >{user ? 'SIGN OUT': 'SIGN IN'}</Menu>
               </Link>
-                <Link to='/cart'>
+                <Link style={{textDecoration: 'none', color: 'white'}} to='/cart'>
                   <Menu >
-                      <Badge badgeContent={quantity} color="primary">
+                      <Badge badgeContent={quantity} color="secondary">
                           <ShoppingCartIcon />
                       </Badge>
                   </Menu>
