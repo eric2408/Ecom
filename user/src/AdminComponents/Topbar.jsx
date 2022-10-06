@@ -3,7 +3,6 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { Badge } from '@mui/material';
 import GTranslateIcon from '@mui/icons-material/GTranslate';
 import SettingsIcon from '@mui/icons-material/Settings';
-
 import styled from 'styled-components';
 
 const Container = styled.div`
