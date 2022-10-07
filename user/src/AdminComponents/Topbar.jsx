@@ -4,6 +4,7 @@ import { Badge } from '@mui/material';
 import GTranslateIcon from '@mui/icons-material/GTranslate';
 import SettingsIcon from '@mui/icons-material/Settings';
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
 
 const Container = styled.div`
     width: 100%;
@@ -53,7 +54,9 @@ function Topbar() {
     <Container>
     <TopbarWrapper>
       <div>
-        <Logo>Virtual Space</Logo>
+        <Link to="/" style={{textDecoration: 'none'}}>
+          <Logo>Virtual Space</Logo>
+        </Link>
       </div>
       <TopRight>
         <IconContainer>

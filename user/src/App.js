@@ -7,6 +7,10 @@ import Products from './Pages/Products';
 import Register from './Pages/Register';
 import Success from './Pages/Success';
 import HomeAd from './AdminPages/HomeAd'
+import Transactions from './AdminPages/Transactions'
+import ProductsAd from './AdminPages/ProductsAd'
+import ProductAd from './AdminPages/ProductAd'
+import AddProduct from './AdminPages/AddProduct'
 import {Routes, Route, Navigate} from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -23,6 +27,10 @@ function App() {
       <Route exact path="/register" element={user ? <Navigate replace to={"/"} /> : <Register />}/>
       <Route exact path="/success" element={<Success />} />
       <Route exact path="/admin" element={<HomeAd />} />
+      <Route exact path="/admin/orders" element={<Transactions />} />
+      <Route exact path="/admin/products" element={<ProductsAd />} />
+      <Route exact path="/admin/products/:id" element={<ProductAd />} />
+      <Route exact path="admin/addproduct" element={<AddProduct />} />
     </Routes>
 
   );

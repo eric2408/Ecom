@@ -115,6 +115,9 @@ function Navbar() {
               </Link>
             </Center>
             <Right >
+              {user?.isAdmin && <Link style={{textDecoration: 'none', color: 'white'}} to={'/admin'}>
+                <Menu>Sellers</Menu>
+              </Link>}
               <Link style={{textDecoration: 'none', color: 'white'}} to={!user && '/register'}>
                 <Menu>{user ? `HELLO ${user?.username}` : 'REGISTER'} </Menu>
               </Link>

@@ -30,7 +30,7 @@ function HomeAd () {
         <Sidebar />
         <Main>
           <Info/> 
-          <Chart data={userData} title="Active Monthly User" grid dataKey="Active User" />
+          <Chart data={userData} title="Monthly Sales" grid dataKey="Revenue" />
           <ContainerTwo>
             <SmallBox />
             <BigBox />

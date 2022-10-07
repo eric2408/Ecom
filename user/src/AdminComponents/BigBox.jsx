@@ -1,5 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { userRequest } from "../requestAxios";
+import moment from "moment";
 
 const Container = styled.div`
     flex: 2;
@@ -33,7 +37,7 @@ const Img = styled.img`
 `
 const Username = styled.span`
 `
-const Date = styled.td`
+const Dates = styled.td`
     font-weight: 300;
 `
 const Amount = styled.td`
@@ -50,15 +54,31 @@ const Button = styled.button`
   color: black;
   background-color: ${props => props.type === 'success' && '#abd98c'};
   background-color: ${props => props.type === 'pending' && '#9bc4e2'};
-  background-color: ${props => props.type === 'declined' && '#d07a7a'};
+  background-color: ${props => props.type === 'cancelled' && '#d07a7a'};
 `
 
 
 function BigBox() {
 
+  const [orders, setOrders] = useState([]);
+
+
+  useEffect(() => {
+    const getOrders = async () => {
+      try {
+        const res = await userRequest.get("orders/?new=true");
+        setOrders(res.data);
+      } catch {}
+    };
+    getOrders();
+  }, []);
+  
+
       return (
         <Container>
-          <Title>Latest transactions</Title>
+          <Link to="/admin/orders" style={{textDecoration: 'none', color: 'black'}}>
+            <Title>Latest Orders</Title>
+          </Link>
           <Table>
             <thead>
             <TR>
@@ -69,50 +89,19 @@ function BigBox() {
             </TR>
             </thead>
             <tbody>
+            {orders.map((order) => (
             <TR>
-              <User>
-                <Img src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" />
-                <Username>Susan Carol</Username>
+              <User key={order._id}>
+                <Img src={order.img ||"https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"} />
+                <Username>{order.username}</Username>
               </User>
-              <Date>2 Jun 2021</Date>
-              <Amount>$122.00</Amount>
+              <Dates>{moment(`${order.createdAt}`).utc().format('YYYY-MM-DD')}</Dates>
+              <Amount>${order.amount}</Amount>
               <Status>
-                <Button type='success'>success</Button>
+                <Button type={order.status}>{order.status}</Button>
               </Status>
             </TR>
-            <TR>
-              <User>
-                <Img src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" />
-                <Username>Susan Carol</Username>
-              </User>
-              <Date>2 Jun 2021</Date>
-              <Amount>$122.00</Amount>
-              <Status>
-                <Button type='success'>success</Button>
-              </Status>
-            </TR>
-            <TR>
-              <User>
-                <Img src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" />
-                <Username>Susan Carol</Username>
-              </User>
-              <Date>2 Jun 2021</Date>
-              <Amount>$122.00</Amount>
-              <Status>
-                <Button type='pending'>pending</Button>
-              </Status>
-            </TR>
-            <TR>
-              <User>
-                <Img src="https://images.pexels.com/photos/4172933/pexels-photo-4172933.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" />
-                <Username>Susan Carol</Username>
-              </User>
-              <Date>2 Jun 2021</Date>
-              <Amount>$122.00</Amount>
-              <Status>
-                <Button type='declined'>declined</Button>
-              </Status>
-            </TR>
+            ))}
             </tbody>
           </Table>
         </Container>

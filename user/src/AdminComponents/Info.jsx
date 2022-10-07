@@ -65,7 +65,7 @@ function Info() {
     <Wrapper>
       <Title>Revenue</Title>
       <InfoContainer>
-        <Amount>$2,415</Amount>
+        <Amount>$4,415</Amount>
         <Rate>
           -11.4 
           <NegativeIcon>
@@ -76,9 +76,9 @@ function Info() {
       <Desc>Compared to last month</Desc>
     </Wrapper>
     <Wrapper>
-      <Title>Sales</Title>
+      <Title>Profit</Title>
       <InfoContainer>
-        <Amount>$4,415</Amount>
+        <Amount>$2,415</Amount>
         <Rate>
           -1.4 
           <NegativeIcon>
@@ -91,7 +91,7 @@ function Info() {
     <Wrapper>
       <Title>Cost</Title>
       <InfoContainer>
-        <Amount>$2,225</Amount>
+        <Amount>$2,000</Amount>
         <Rate>
           +2.4 
           <PositiveIcon>

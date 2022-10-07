@@ -80,7 +80,9 @@ router.get('/:userId', ensureCorrectUserOrAdmin, async(req, res) => {
 // Get all orders
 router.get('/', ensureAdmin, async(req, res) => {
     try {
-        const orders = await Order.find();
+        const query = req.query.new
+
+        const orders = query ? await Order.find().sort({_id:-1}).limit(5) : await Order.find();
         res.status(200).json(orders);
       } catch (e) {
         res.status(500).json(e);

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useLocation } from "react-router";
 import { userRequest } from "../requestAxios";
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import robo from '../img/sq.png';
+import { emptyCart } from '../redux/cart';
 
 const Container = styled.div`
   height: 100%;
@@ -39,10 +40,12 @@ const Button = styled.button`
 
 const Success = () => {
   const location = useLocation();
+  const user = useSelector(state => state.user.currentUser);
   const data = location.state.stripeData;
   const cart = location.state.products;
   const currentUser = useSelector((state) => state.user.currentUser);
   const [orderId, setOrderId] = useState(null);
+  const dispatch = useDispatch();
 
 
   useEffect(() => {
@@ -50,6 +53,8 @@ const Success = () => {
       try {
         const res = await userRequest.post("/orders/", {
           userId: currentUser._id,
+          username: currentUser.username,
+          img: currentUser.img,
           products: cart.products.map((item) => ({
             productId: item._id,
             quantity: item._quantity,
@@ -65,7 +70,11 @@ const Success = () => {
     data && createOrder();
   }, [cart, data, currentUser]);
 
-
+  const handleSuccess = () => {
+    if(user){
+      emptyCart(dispatch)
+    }
+  }
   return (
     <Container>
       <Img src={robo} />
@@ -74,7 +83,7 @@ const Success = () => {
         ? `Order has been created successfully. Your order number is ${orderId}`
         : `Successfull Transaction. Your order record is being prepared...`}
         <Link to='/' >
-          <Button>Go to Homepage</Button>
+          <Button onClick={() => handleSuccess()} >Go to Homepage</Button>
         </Link>
       </Message>
     </Container>

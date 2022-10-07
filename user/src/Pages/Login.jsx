@@ -26,6 +26,9 @@ const Logo = styled.h1`
     justify-content: center;
     cursor: pointer;
     color: #6f50e6;
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 20px;
 `
 
 const Box = styled.div`

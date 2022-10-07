@@ -78,7 +78,7 @@ function Sidebar() {
       <BarContainer>
         <Title>Dashboard</Title>
         <List>
-          <Link to="/" style={{textDecoration: 'none', color: 'black'}}>
+          <Link to="/admin" style={{textDecoration: 'none', color: 'black'}}>
           <ActiveItem>
             <Icon>
             <ArticleIcon />
@@ -96,22 +96,14 @@ function Sidebar() {
             <Icon>
                 <PaidIcon />
             </Icon>
-            Sales
+            Net Profit
           </Item>
         </List>
       </BarContainer>
       <BarContainer>
         <Title>Manage</Title>
         <List>
-          <Link to="/users" style={{textDecoration: 'none', color: 'black'}}>
-            <Item>
-            <Icon>
-                <AccountCircleIcon />
-            </Icon>
-              Users
-            </Item>
-          </Link>
-          <Link to="/products" style={{textDecoration: 'none', color: 'black'}}>
+          <Link to="/admin/products/" style={{textDecoration: 'none', color: 'black'}}>
             <Item>
                 <Icon>
                     <Inventory2Icon />
@@ -119,13 +111,15 @@ function Sidebar() {
               Products
             </Item>
           </Link>
-          <Item>
-            <Icon>
-                <ReceiptLongIcon />
-            </Icon>
-            Transactions
-          </Item>
-          <Item>
+          <Link to="/admin/orders" style={{textDecoration: 'none', color: 'black'}}>
+            <Item>
+              <Icon>
+                  <ReceiptLongIcon />
+              </Icon>
+              Orders
+            </Item>
+          </Link> 
+            <Item>
             <Icon>
                 <AssessmentIcon />
             </Icon>

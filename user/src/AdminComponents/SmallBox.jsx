@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
+import { userRequest } from "../requestAxios";
+import { useEffect, useState } from "react";
 
 const Container = styled.div`
     flex: 1;
@@ -41,10 +43,6 @@ const Username = styled.span`
     font-weight: 600;
 `
 
-const UserJob = styled.span`
-    font-weight: 300;
-`
-
 const Button = styled.div`
     display: flex;
     align-items: center;
@@ -59,60 +57,33 @@ const Button = styled.div`
 
 
 function SmallBox() {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const res = await userRequest.get("users/?new=true");
+        setUsers(res.data);
+      } catch {}
+    };
+    getUsers();
+  }, []);
+
   return (
     <Container>
-      <Title>New Join Members</Title>
+      <Title>Your Customers</Title>
       <UL>
-        <List>
-          <Img src="https://images.pexels.com/photos/3992656/pexels-photo-3992656.png?auto=compress&cs=tinysrgb&dpr=2&w=500"/>
+        {users.map((user) => (
+        <List key={user._id}>
+          <Img src={ user.img ||"https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"}/>
           <User>
-            <Username>Joe Rogan</Username>
-            <UserJob>Software Engineer</UserJob>
+            <Username>{user.username}</Username>
           </User>
           <Button>
             Display
           </Button>
         </List>
-        <List>
-            <Img src="https://images.pexels.com/photos/3992656/pexels-photo-3992656.png?auto=compress&cs=tinysrgb&dpr=2&w=500"/>
-          <User>
-            <Username>Anna Keller</Username>
-            <UserJob>Software Engineer</UserJob>
-          </User>
-          <Button>
-            Display
-          </Button>
-        </List>
-        <List>
-            <Img src="https://images.pexels.com/photos/3992656/pexels-photo-3992656.png?auto=compress&cs=tinysrgb&dpr=2&w=500"/>
-          <User>
-            <Username>Anna Keller</Username>
-            <UserJob>Software Engineer</UserJob>
-          </User>
-          <Button>
-            Display
-          </Button>
-        </List>
-        <List>
-            <Img src="https://images.pexels.com/photos/3992656/pexels-photo-3992656.png?auto=compress&cs=tinysrgb&dpr=2&w=500"/>
-          <User>
-            <Username>Anna Keller</Username>
-            <UserJob>Software Engineer</UserJob>
-          </User>
-          <Button>
-            Display
-          </Button>
-        </List>
-        <List>
-            <Img src="https://images.pexels.com/photos/3992656/pexels-photo-3992656.png?auto=compress&cs=tinysrgb&dpr=2&w=500"/>
-          <User>
-            <Username>Anna Keller</Username>
-            <UserJob>Software Engineer</UserJob>
-          </User>
-          <Button>
-            Display
-          </Button>
-        </List>
+        ))}
       </UL>
     </Container>
   )

@@ -161,7 +161,16 @@ const ButtonTwo = styled.button`
   }
 `
 
+const Err = styled.h3`
+  margin-top: 15px;
+  text-align: center;
+  color: red;
+`;
+
+
+
 const Cart = () => {
+  const user = useSelector(state => state.user);
   const cart = useSelector(state => state.cart);
   console.log(cart)
   const [token, setToken] = useState(null);
@@ -197,6 +206,7 @@ const Cart = () => {
             dispatch(subtractOne({id}))
       }
   }
+
 
   const removeFromBasket = (id) => {
     dispatch(removeOne({ id }))
@@ -258,7 +268,7 @@ const Cart = () => {
               <SItemText>Total</SItemText>
               <SItemPrice>$ {cart.total}</SItemPrice>
             </SItem>
-            <StripeCheckout
+             <StripeCheckout
               name="Virtual Space"
               image={robo}
               billingAddress

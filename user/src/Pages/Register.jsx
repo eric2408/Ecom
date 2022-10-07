@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styled from "styled-components";
 import { mobileScreen } from '../Helper';
 import {Link} from 'react-router-dom';
+import { generalRequest } from "../requestAxios";
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   width: 100vw;
@@ -20,11 +22,16 @@ const Padding = styled.div`
 `;
 
 const Logo = styled.h1`
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 20px;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     color: #6f50e6;
+
 `
+
 
 const Box = styled.div`
     border: 1mm solid white;
@@ -66,26 +73,42 @@ const Button = styled.button`
 `;
 
 function Register() {
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const navigate = useNavigate();
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try{
+      const res = await generalRequest.post('/auth/register', {username, email, password});
+      navigate('/login');
+    } catch(er){
+      console.log(er)
+    }
+  }
+
   return (
     <Container >
       <Padding>
-              <Link style={{textDecoration: 'none'}} to='/'>
-                <Logo>VIRTUAL SPACE</Logo>
-              </Link>
+                <Link style={{textDecoration: 'none'}} to='/'>
+                  <Logo>VIRTUAL SPACE</Logo>
+                </Link>
         <Box>
             <Title>CREATE ACCOUNT</Title>
             <Form>
             <Input placeholder="Name" />
             <Input placeholder="Last Name" />
-            <Input placeholder="Username" />
-            <Input placeholder="Email" />
-            <Input placeholder="Password" />
+            <Input placeholder="Username" onChange={(e)=> setUsername(e.target.value)}/>
+            <Input placeholder="Email" onChange={(e)=> setEmail(e.target.value)}/>
+            <Input placeholder="Password" onChange={(e)=> setPassword(e.target.value)}/>
             <Input placeholder="Confirm Password" />
             <Agreement>
                 By creating an account, I consent to the processing of my personal
                 data in accordance with the <b>PRIVACY POLICY</b>
             </Agreement>
-            <Button>CREATE</Button>
+            <Button  onClick={handleRegister} >CREATE</Button>
             </Form>
         </Box>
       </Padding>
