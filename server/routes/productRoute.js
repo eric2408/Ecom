@@ -16,7 +16,7 @@ router.post('/', ensureAdmin, async (req, res) => {
 // Update Product's Info by Id
 router.put('/:id', ensureAdmin, async (req, res) => {
     try{
-        const updatedProduct = await Product.findByIdAndUpdate(req.params.id, {
+        const updatedProduct = await Product.updateOne({_id: req.params.id}, {
             $set: req.body,
         },{new:true})
 

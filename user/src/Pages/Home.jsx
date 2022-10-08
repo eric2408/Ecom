@@ -7,9 +7,12 @@ import ProductList from '../Components/ProductList'
 import Sliders from '../Components/Sliders'
 import Subscription from '../Components/Subscription'
 import Features from '../Components/Features'
-
+import { useSelector } from "react-redux";
 
 function Home() {
+  const products = useSelector((state) => state.product.products);
+  // products.pop();
+  console.log(products)
   return (
     <div>
         <Announcement />

@@ -3,6 +3,35 @@ const { authenticateJWT, ensureCorrectUserOrAdmin, ensureAdmin } = require('../M
 const Order = require('../models/Order');
 
 
+// Get order statistics
+router.get("/stats", ensureAdmin, async (req, res) => {
+  try {
+  const date = new Date();
+  const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
+
+    const data = await Order.aggregate([
+      { $match: { createdAt: { $gte: lastYear } } },
+      {
+        $project: {
+          month: { $month: "$createdAt" }
+        }
+      },
+      {
+        $group: {
+          _id: "$month",
+          total: { $sum: 1 },
+        },
+      },
+    ]);
+
+    return res.status(200).json(data)
+  } catch (e) {
+    res.status(500).json(e);
+  }
+});
+
+
+
 // Add products to order
 router.post('/', authenticateJWT, async (req, res) => {
     const newOrder = new Order(req.body)
@@ -40,13 +69,17 @@ router.delete('/:id', ensureAdmin, async(req, res) => {
 
 // Get monthly revenue for the damin
 router.get("/revenue", ensureAdmin, async (req, res) => {
+    const productId = req.query.id;
     const date = new Date();
     const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
     const previousMonth = new Date(new Date().setMonth(lastMonth.getMonth() - 1));
   
     try {
       const revenue = await Order.aggregate([
-        { $match: { createdAt: { $gte: previousMonth } } },
+        { $match: { createdAt: { $gte: previousMonth },
+        ...(productId && {
+          products: {$elemMatch: {productId}},
+        }) } },
         {
           $project: {
             month: { $month: "$createdAt" },

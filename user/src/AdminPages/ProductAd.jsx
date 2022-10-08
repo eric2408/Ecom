@@ -1,12 +1,16 @@
-import React from 'react'
+import { useEffect, useMemo, useState } from "react";
 import Topbar from '../AdminComponents/Topbar';
 import Sidebar from '../AdminComponents/Sidebar';
 import styled from 'styled-components';
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Chart from "../AdminComponents/Chart"
-import { productData } from "../adminData"
 import FileUploadIcon from '@mui/icons-material/FileUpload';
-
+import { useSelector } from "react-redux";
+import { userRequest } from "../requestAxios";
+import { updateProduct } from '../redux/product';
+import { useDispatch } from "react-redux";
+import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import app from "../firebase";
 
 const Container = styled.div`
   display: flex;
@@ -84,7 +88,7 @@ const Val = styled.span`
 
 const Bottom = styled.div`
     padding: 20px;
-    margin: 20px 500px;
+    margin: 20px 300px;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 `
 
@@ -107,6 +111,7 @@ const FormLInput = styled.input`
     border: none;
     padding: 5px;
     border: 1px solid gray;
+
 `
 const Select = styled.select`
     display: flex;
@@ -153,7 +158,106 @@ const Icon = styled.div`
     cursor: pointer;
 `
 
+const InfoTitle = styled.h4`
+    text-align: center;
+    margin-bottom: 15px;
+`
+
 function ProductAd() {
+    const location = useLocation();
+    const pId = location.pathname.split("/")[3];
+    const [info, setInfo] = useState([]);
+    const product = useSelector(state => state.product.products.find(product => product._id === pId));
+    const [inputs, setInputs] = useState({});
+    const [file, setFile] = useState(null);
+    const dispatch = useDispatch();
+
+    const handleChange = (e) => {
+        setInputs((prev) => {
+          return { ...prev, [e.target.name]: e.target.value };
+        });
+      };
+      const products = useSelector((state) => state.product.products);
+      console.log(products)
+      console.log(pId, product, file, inputs)
+    
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const fileName = new Date().getTime() + file.name;
+        const storage = getStorage(app);
+        const storageRef = ref(storage, fileName);
+        const uploadTask = uploadBytesResumable(storageRef, file);
+    
+        uploadTask.on('state_changed', 
+          (snapshot) => {
+            // Observe state change events such as progress, pause, and resume
+            // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            console.log('Upload is ' + progress + '% done');
+            switch (snapshot.state) {
+              case 'paused':
+                console.log('Upload is paused');
+                break;
+              case 'running':
+                console.log('Upload is running');
+                break;
+            }
+          }, 
+          (error) => {
+            // Handle unsuccessful uploads
+            console.log(error)
+          }, 
+          () => {
+            // Handle successful uploads on complete
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+              const product = {...inputs, img: downloadURL, _id: pId };
+              updateProduct(pId, product, dispatch)
+            });
+          }
+        );
+      };  
+
+
+
+    const MONTHS = useMemo(
+      () => [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Agu",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
+      []
+    );
+  
+    useEffect(() => {
+      const getInfo = async () => {
+        try {
+          const res = await userRequest.get("orders/revenue?id=" + pId);
+          const list = res.data.sort((one,two)=>{
+              return one._id - two._id
+          })
+          list.map((item) =>
+            setInfo((prev) => [
+              ...prev,
+              { name: MONTHS[item._id - 1], Sales: item.total },
+            ])
+          );
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      getInfo();
+    }, [pId, MONTHS]);
+
   return (
     <>
     <Topbar/>
@@ -170,30 +274,27 @@ function ProductAd() {
                 <Top>
                     <TopL>
                         <InfoT>
-                            <Img src="https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" alt="" />
-                            <Name>Name: Apple Airpods</Name>
+                            <Img src={product.img} alt="" />
+                            <Name>Name: {product.title}</Name>
                         </InfoT>
                         <InfoB>
+                            <InfoTitle>Details</InfoTitle>
                             <InfoContainer>
                                 <Key>id:</Key>
-                                <Val>123</Val>
+                                <Val>{product._id}</Val>
                             </InfoContainer>
                             <InfoContainer>
                                 <Key>sales:</Key>
                                 <Val>5123</Val>
                             </InfoContainer>
                             <InfoContainer>
-                                <Key>active:</Key>
-                                <Val>yes</Val>
-                            </InfoContainer>
-                            <InfoContainer>
                                 <Key>in stock:</Key>
-                                <Val>yes</Val>
+                                <Val>{product.inStock}</Val>
                             </InfoContainer>
                         </InfoB>
                     </TopL>
                     <TopR>
-                        <Chart data={productData} dataKey="Sales" title="Number of Goods Sold"/>
+                        <Chart data={info} title="Number of Goods Sold" dataKey="Sales" />
                     </TopR>
                 </Top>
                 <Bottom>
@@ -201,29 +302,28 @@ function ProductAd() {
                     <Forms>
                         <FormL>
                             <FormLLabel>Product Name</FormLLabel>
-                            <FormLInput type="text" placeholder="Apple AirPod" />
+                            <FormLInput name="title" type="text" placeholder={product.title} size="60" onChange={handleChange}/>
+                            <FormLLabel>Product Description</FormLLabel>
+                            <FormLInput name="description" type="text" placeholder={product.description} onChange={handleChange}/>
+                            <FormLLabel>Price</FormLLabel>
+                            <FormLInput name="price" type="text" placeholder={product.price}onChange={handleChange}/>
                             <FormLLabel>In Stock</FormLLabel>
-                            <Select name="inStock" id="idStock">
-                                <Option value="yes">Yes</Option>
-                                <Option value="no">No</Option>
-                            </Select>
-                            <FormLLabel>Active</FormLLabel>
-                            <Select name="active" id="active">
-                                <Option value="yes">Yes</Option>
-                                <Option value="no">No</Option>
+                            <Select name="inStock" id="idStock" onChange={handleChange}>
+                                <Option value="true">Yes</Option>
+                                <Option value="false">No</Option>
                             </Select>
                         </FormL>
                         <FormR>
                             <Upload>
-                                <PrevImg src="https://images.pexels.com/photos/7156886/pexels-photo-7156886.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500" alt="" className="productUploadImg" />
+                                <PrevImg src={product.img} alt="" />
                                 <label htmlFor="file">
                                     <Icon>
                                         <FileUploadIcon />
                                     </Icon>
                                 </label>
-                                <input type="file" id="file" style={{display:"none"}} />
+                                <input type="file" id="file" style={{display:"none"}} onChange={(e) => setFile(e.target.files[0])}/>
                             </Upload>
-                            <FinalButton>Update</FinalButton>
+                            <FinalButton onClick={handleSubmit}>Update</FinalButton>
                         </FormR>
                     </Forms>
                 </Bottom>

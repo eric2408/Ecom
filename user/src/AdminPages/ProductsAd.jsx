@@ -4,9 +4,11 @@ import Sidebar from '../AdminComponents/Sidebar';
 import styled from 'styled-components';
 import { DataGrid } from '@mui/x-data-grid';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { productRows } from "../adminData";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteProduct, getProducts } from '../redux/product';
+
 
 const Container = styled.div`
   display: flex;
@@ -29,7 +31,7 @@ const Title = styled.h3`
     font-weight: 600;
 `
 
-const ProductItem = styled.h3`
+const ProductItem = styled.h4`
     display: flex;
     align-items: center;
 `
@@ -73,34 +75,36 @@ const Add = styled.button`
 `
 
 function ProductsAd() {
-    const [data, setData] = useState(productRows);
-    
+
+    const dispatch = useDispatch();
+    const products = useSelector((state) => state.product.products);
+  
+    useEffect(() => {
+      getProducts(dispatch);
+    }, [dispatch]);
+
+    console.log(products)
 
     const handleDelete = (id) => {
-        setData(data.filter(item => item.id !== id));
+        deleteProduct(id, dispatch)
       };
 
       const columns = [
-        { field: "id", headerName: "ID", width: 90 },
+        { field: "_id", headerName: "ID", width: 220 },
         {
           field: "product",
           headerName: "Product",
-          width: 200,
+          width: 450,
           renderCell: (params) => {
             return (
               <ProductItem>
                 <Img src={params.row.img} alt="" />
-                {params.row.name}
+                {params.row.title}
               </ProductItem>
             );
           },
         },
-        { field: "stock", headerName: "Stock", width: 200 },
-        {
-          field: "status",
-          headerName: "Status",
-          width: 120,
-        },
+        { field: "inStock", headerName: "Stock", width: 200 },
         {
           field: "price",
           headerName: "Price",
@@ -113,12 +117,12 @@ function ProductsAd() {
           renderCell: (params) => {
             return (
               <>
-                <Link to={"/admin/products/" + params.row.id}>
+                <Link to={"/admin/products/" + params.row._id}>
                   <Edit>Edit</Edit>
                 </Link>
                 <Delete>
                     <HighlightOffIcon
-                    onClick={() => handleDelete(params.row.id)}
+                    onClick={() => handleDelete(params.row._id)}
                     />
                 </Delete>
               </>
@@ -136,7 +140,8 @@ function ProductsAd() {
             <ProductsContainer>
             <Title>Products</Title>
             <DataGrid
-            rows={data}
+            rows={products}
+            getRowId={row => row._id}
             disableSelectionOnClick
             columns={columns}
             pageSize={8}

@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import { useEffect, useState } from "react";
+import { userRequest } from "../requestAxios";
 
 const Container = styled.div`
     width: 100%;
@@ -60,17 +62,38 @@ const Desc = styled.span`
 
 
 function Info() {
+  const [revenue, setRevenue] = useState([]);
+  const [percentage, setPercentage] = useState(0);
+  const cost = 151;
+
+  useEffect(() => {
+    const getRevenue = async () => {
+      try {
+        const res = await userRequest.get("orders/revenue");
+        setRevenue(res.data);
+        setPercentage((res.data[1].total * 100) / res.data[0].total - 100);
+      } catch {}
+    };
+    getRevenue();
+  }, []);
+
   return (
     <Container>
     <Wrapper>
       <Title>Revenue</Title>
       <InfoContainer>
-        <Amount>$4,415</Amount>
+        <Amount>${revenue[1]?.total}</Amount>
         <Rate>
-          -11.4 
-          <NegativeIcon>
-            <ArrowDownwardIcon/>
-          </NegativeIcon>
+        {Math.floor(percentage)}%{" "}
+            {percentage < 0 ? (
+              <NegativeIcon>
+                <ArrowDownwardIcon/>
+              </NegativeIcon>
+            ) : (
+              <PositiveIcon>
+                <ArrowUpwardIcon/>
+              </PositiveIcon>
+            )}
         </Rate>
       </InfoContainer>
       <Desc>Compared to last month</Desc>
@@ -78,9 +101,9 @@ function Info() {
     <Wrapper>
       <Title>Profit</Title>
       <InfoContainer>
-        <Amount>$2,415</Amount>
+        <Amount>${revenue[1]?.total-cost}</Amount>
         <Rate>
-          -1.4 
+          -14% 
           <NegativeIcon>
             <ArrowDownwardIcon/>
           </NegativeIcon>
@@ -91,9 +114,9 @@ function Info() {
     <Wrapper>
       <Title>Cost</Title>
       <InfoContainer>
-        <Amount>$2,000</Amount>
+        <Amount>${cost}</Amount>
         <Rate>
-          +2.4 
+          +12% 
           <PositiveIcon>
             <ArrowUpwardIcon/>
           </PositiveIcon>

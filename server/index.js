@@ -19,7 +19,6 @@ mongoose
 .then(()=> console.log('connection successful!'))
 .catch((error) => console.log(error));
 
-
 app.use(express.json());
 app.use(cors());
 
