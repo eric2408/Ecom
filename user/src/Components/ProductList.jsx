@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import styled from "styled-components";
-import { popularProducts } from '../data';
 import Product from './Product';
 import axios from 'axios';
 
@@ -51,7 +50,7 @@ function ProductList({cat, filters, sort}) {
   }, [cat])
 
   useEffect(()=>{
-    cat && setFilteredProducts(
+    setFilteredProducts(
       products.filter(i => 
         Object.entries(filters).every(([key, value]) => i[key].includes(value)))
     );
@@ -80,8 +79,7 @@ function ProductList({cat, filters, sort}) {
         <Header>Popular Products</Header>
       </Section_head>
       <Container >
-          {cat ? filteredProducts.map((i)=> <Product item={i} key={i._id} />)
-              : products.slice(0,8).map((i)=> <Product item={i} key={i._id} />)}
+          {filteredProducts.map((i)=> <Product item={i} key={i._id} />)}
       </Container>
     </Section>
 

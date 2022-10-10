@@ -64,7 +64,7 @@ const Desc = styled.span`
 function Info() {
   const [revenue, setRevenue] = useState([]);
   const [percentage, setPercentage] = useState(0);
-  const cost = 151;
+  const cost = 1500;
 
   useEffect(() => {
     const getRevenue = async () => {
@@ -116,7 +116,7 @@ function Info() {
       <InfoContainer>
         <Amount>${cost}</Amount>
         <Rate>
-          +12% 
+          +32% 
           <PositiveIcon>
             <ArrowUpwardIcon/>
           </PositiveIcon>

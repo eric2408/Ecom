@@ -11,6 +11,8 @@ import Transactions from './AdminPages/Transactions'
 import ProductsAd from './AdminPages/ProductsAd'
 import ProductAd from './AdminPages/ProductAd'
 import AddProduct from './AdminPages/AddProduct'
+import Order from './Pages/Order'
+import Profile from './Pages/Profile'
 import {Routes, Route, Navigate} from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -23,6 +25,8 @@ function App() {
       <Route exact path="/product/:id" element={<ProductDetail />} />
       <Route exact path="/products" element={<Products />} />
       <Route exact path="/cart" element={<Cart />} />
+      <Route exact path="/orders" element={!user ? <Navigate replace to={"/"} /> : <Order />} />
+      <Route exact path="/profile" element={!user ? <Navigate replace to={"/"} /> : <Profile />} />
       <Route exact path="/login"  element={user ? <Navigate replace to={"/"} /> : <Login />}/>
       <Route exact path="/register" element={user ? <Navigate replace to={"/"} /> : <Register />}/>
       <Route exact path="/success" element={<Success />} />

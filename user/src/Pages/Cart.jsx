@@ -170,9 +170,9 @@ const Err = styled.h3`
 
 
 const Cart = () => {
-  const user = useSelector(state => state.user);
+  const user = useSelector(state => state.user.currentUser);
   const cart = useSelector(state => state.cart);
-  console.log(cart)
+  console.log(user)
   const [token, setToken] = useState(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -201,8 +201,7 @@ const Cart = () => {
   const handleClick = (sign, id) => {
       if(sign === 'addition'){
             dispatch(addOne({id}))
-    
-      } else if(sign === 'subtract'){
+      }else if(sign === 'subtract'){
             dispatch(subtractOne({id}))
       }
   }
@@ -211,6 +210,7 @@ const Cart = () => {
   const removeFromBasket = (id) => {
     dispatch(removeOne({ id }))
   }
+  console.log(cart)
 
   return (
     <Container>
@@ -243,7 +243,7 @@ const Cart = () => {
                   <Amount>{product.quantity}</Amount>
                   <RemoveIcon onClick={()=> handleClick('subtract', product._id)}/>
                 </AmountContainer>
-                <ProductPrice>$ {cart.total}</ProductPrice>
+                <ProductPrice>$ {product.quantity * product.price}</ProductPrice>
                 <ButtonTwo onClick={()=> removeFromBasket(product._id)}>Remove</ButtonTwo>
               </Price>
 
@@ -268,7 +268,8 @@ const Cart = () => {
               <SItemText>Total</SItemText>
               <SItemPrice>$ {cart.total}</SItemPrice>
             </SItem>
-             <StripeCheckout
+            {user ?
+              <StripeCheckout
               name="Virtual Space"
               image={robo}
               billingAddress
@@ -277,9 +278,11 @@ const Cart = () => {
               amount={cart.total * 100}
               token={onToken}
               stripeKey={publicKey}
-            >
+              >
               <Button>CHECKOUT NOW</Button>
             </StripeCheckout>
+            :  <Button>CHECKOUT NOW</Button>
+                }    
           </OrderSummary>
         </Orders>
       </Padding>

@@ -47,7 +47,10 @@ function HomeAd () {
     const getStats = async () => {
       try {
         const res = await userRequest.get("orders/stats");
-        res.data.map((item) =>
+        const list = res.data.sort((one,two)=>{
+          return one._id - two._id
+        })
+        list.map((item) =>
           setOrder((prev) => [
             ...prev,
             { name: MONTHS[item._id - 1], "Order Quantity": item.total },

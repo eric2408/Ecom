@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { generalRequest } from "../requestAxios";
+import { generalRequest, userRequest } from "../requestAxios";
 
 const user = createSlice({
   name: "user",
@@ -24,10 +24,15 @@ const user = createSlice({
     logOut: (state) => {
       state.currentUser = null;
     },
+    update: (state, action) => {
+      state.isFetching = false;
+      state.error = false;
+      state.currentUser = action.payload;
+    },
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure, logOut } = user.actions;
+export const { loginStart, loginSuccess, loginFailure, logOut, update } = user.actions;
 export default user.reducer;
 
 
@@ -49,3 +54,11 @@ export const logout = async(dispatch, user) => {
   }
 }
 
+export const updateUser = async (id, user, dispatch) => {
+  try {
+    const res = await userRequest.put(`/users/${id}`, user);
+    dispatch(update(res.data));
+  } catch (err) {
+    console.log(err)
+  }
+};

@@ -61,7 +61,17 @@ const Button = styled.button`
 function BigBox() {
 
   const [orders, setOrders] = useState([]);
+  const [users, setUsers] = useState([]);
 
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const res = await userRequest.get("users");
+        setUsers(res.data);
+      } catch {}
+    };
+    getUsers();
+  }, []);
 
   useEffect(() => {
     const getOrders = async () => {
@@ -92,7 +102,7 @@ function BigBox() {
             {orders.map((order) => (
             <TR>
               <User key={order._id}>
-                <Img src={order.img ||"https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"} />
+                <Img src={users[users.findIndex((item) => item._id === order.userId)].img ||"https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"} />
                 <Username>{order.username}</Username>
               </User>
               <Dates>{moment(`${order.createdAt}`).utc().format('YYYY-MM-DD')}</Dates>

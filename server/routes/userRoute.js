@@ -7,14 +7,10 @@ const User = require('../models/User');
 // Update User's Info by Id
 router.put('/:id', ensureCorrectUserOrAdmin, async (req, res) => {
 
-    if(req.body.password){
-        req.body.password =  await bcrypt.hash(req.body.password, Number(process.env.BCRYPT_WORK_FACTOR))
-    }
-
     try{
         const updatedUser = await User.findByIdAndUpdate(req.params.id, {
             $set: req.body,
-        },{new:true,})
+        },{new:true})
 
         console.log(updatedUser)
 

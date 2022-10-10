@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components';
 import SearchIcon from '@mui/icons-material/Search';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {Link } from 'react-router-dom';
 import { logout } from '../redux/user';
 import { emptyCart } from '../redux/cart';
-
+import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 
 const Container = styled.div`
     height: 100px;
@@ -77,19 +77,67 @@ const Right = styled.div`
 const Menu = styled.div`
   font-size: 14px;
   cursor: pointer;
-  :hover{
-    color: #6f50e6;
-  }
   margin-left: 25px;
   ${mobileScreen({ fontSize: "12px", marginLeft: "10px" })}
 `;
 
+const MenuTwo = styled.div`
+  font-size: 14px;
+  cursor: pointer;
+  margin-left: 25px; 
+  ${mobileScreen({ fontSize: "12px", marginLeft: "10px" })}
+`;
+
+
+const Dropdown = styled.div`
+position: relative;
+`;
+const DropMenu = styled.div`
+  margin-top: 15px;
+  position: absolute;
+  padding: 0.75rem;
+  padding-top: 25px;
+  border:1px solid;
+  border-color:#6f50e6; 
+  border-radius: .25rem;
+  background-color: #6f50e6;
+`;
+
+const Pro = styled.div`
+  padding: 5px;
+  padding-right: 100px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  // :hover {
+  //   color: #6f50e6;
+  //   background-color: black;
+  // }
+  margin-bottom: 10px;
+  `;
+
+const Sign = styled.div`
+  padding: 5px;
+  padding-right: 50px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: 10px;
+  :hover {
+    color: #6f50e6;
+    background-color: white;
+  }
+  margin-bottom: 10px;
+`;
+
+
 function Navbar() {
   const quantity = useSelector(state => state.cart.quantity)
   const user = useSelector(state => state.user.currentUser);
+  const [open, setOpen] = useState(false);
   console.log(user)
   const dispatch = useDispatch();
-
 
   const handleAuthentication = () => {
     if(user){
@@ -116,13 +164,27 @@ function Navbar() {
             </Center>
             <Right >
               {user?.isAdmin && <Link style={{textDecoration: 'none', color: 'white'}} to={'/admin'}>
-                <Menu>Sellers</Menu>
+                <Menu>SELLERS</Menu>
               </Link>}
               <Link style={{textDecoration: 'none', color: 'white'}} to={!user && '/register'}>
-                <Menu>{user ? `HELLO ${user?.username}` : 'REGISTER'} </Menu>
+                <MenuTwo>{user ? open ? <Dropdown onClick={() => setOpen(!open)}>
+                                HELLO {user?.username} 
+                                <DropMenu>
+                                  <Pro>
+                                    <ManageAccountsIcon style={{'margin-right': 10}}/>
+                                    <Link style={{textDecoration: 'none', color: 'white'}} to={'/profile'}>PROFILE</Link>
+                                  </Pro>
+                                  <Sign onClick={() => handleAuthentication()}>SIGN OUT</Sign>
+                                </DropMenu>
+                              </Dropdown> : <Dropdown onClick={() => setOpen(!open)}>
+                                HELLO {user?.username}
+                              </Dropdown>
+                              : <Menu>REGISTER</Menu>} </MenuTwo>
               </Link>
               <Link style={{textDecoration: 'none', color: 'white'}} to={!user && '/login'}>
-                <Menu onClick={() => handleAuthentication()} >{user ? 'SIGN OUT': 'SIGN IN'}</Menu>
+                <Menu >{user ? <Link style={{textDecoration: 'none', color: 'white'}} to={'/orders'}>RETURNS & ORDERS</Link>
+                : 'SIGN IN'}
+                </Menu>
               </Link>
                 <Link style={{textDecoration: 'none', color: 'white'}} to='/cart'>
                   <Menu >

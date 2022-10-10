@@ -25,8 +25,8 @@ const ImgContainer = styled.div`
 `;
 
 const Img = styled.img`
-  width: 80vh;
-  height: 80vh;
+  width: 500px;
+  height: 500px;
   object-fit: cover;
   ${mobileScreen({ height: "40vh" })}
 `;
@@ -131,11 +131,14 @@ function ProductDetail() {
   const [color, setColor] = useState("");
   const [size, setSize] = useState("");
 
+
   useEffect(() => {
     const getProduct = async () => {
       try {
         const res = await generalRequest.get("/products/" + id);
         setProduct(res.data);
+        setColor(res.data.color)
+        setSize(res.data.size)
       } catch {}
     };
     getProduct();
@@ -154,6 +157,8 @@ function ProductDetail() {
     dispatch(addProduct({ ...product, quantity, color, size }))
 
   }
+
+
 
   return (
     <Container>

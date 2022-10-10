@@ -137,7 +137,7 @@ function Footer() {
           <PhoneIphoneIcon style={{marginRight:"10px"}}/> +1 234 56 7899
         </Contact>
         <Contact>
-          <EmailIcon style={{marginRight:"10px"}} /> eric123@gmail.com
+          <EmailIcon style={{marginRight:"10px"}} /> jo123@gmail.com
         </Contact>
         <Payment src="https://chargie.org/wp-content/uploads/2021/03/PayPal-stripe-web-opt-300x136-1-300x136-300x136-1.png" />
       </Right>

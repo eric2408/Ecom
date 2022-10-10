@@ -18,7 +18,7 @@ const Main = styled.div`
 `
 const TransactionContainer = styled.div`
   flex: 4;
-  height: 530px;
+  height: 730px;
   margin-left: 40px;
   margin-right: 100px;
 `
@@ -88,7 +88,7 @@ function UserAd() {
   };
   
   const columns = [
-    { field: "id", headerName: "ID", width: 250 },
+    { field: "id", headerName: "User Id", width: 250 },
     {
       field: "username",
       headerName: "Username",
@@ -103,7 +103,7 @@ function UserAd() {
       },
     },
     { field: "createdAt",
-      headerName: "Date", 
+      headerName: "Transaction Date", 
       width: 200, 
       renderCell: (params) => {
         return (
@@ -113,7 +113,7 @@ function UserAd() {
     },
     {
       field: "status",
-      headerName: "Status",
+      headerName: "Order Status",
       width: 120,
       renderCell: (params) => {
         return (
@@ -123,7 +123,7 @@ function UserAd() {
     },
     {
       field: "amount",
-      headerName: "Transactions",
+      headerName: "Transaction Amount",
       width: 160,
     },
     {
@@ -159,8 +159,8 @@ function UserAd() {
             rows={orders}
             disableSelectionOnClick
             columns={columns}
-            pageSize={8}
-            rowsPerPageOptions={[8]}
+            pageSize={12}
+            rowsPerPageOptions={[12]}
             checkboxSelection
             />
           </TransactionContainer>

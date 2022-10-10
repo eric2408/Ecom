@@ -5,6 +5,7 @@ import GTranslateIcon from '@mui/icons-material/GTranslate';
 import SettingsIcon from '@mui/icons-material/Settings';
 import styled from 'styled-components';
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Container = styled.div`
     width: 100%;
@@ -50,6 +51,8 @@ const Img = styled.img`
 `
 
 function Topbar() {
+  const user = useSelector((state) => state.user.currentUser);
+
   return (
     <Container>
     <TopbarWrapper>
@@ -72,7 +75,7 @@ function Topbar() {
                 <SettingsIcon />
             </Badge>
         </IconContainer>
-        <Img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8M3x8bWFuJTIwZmFjZXxlbnwwfHwwfHw%3D&w=1000&q=80"/>
+        <Img src={user.img}/>
       </TopRight>
     </TopbarWrapper>
   </Container>

@@ -44,21 +44,21 @@ router.post('/', authenticateJWT, async (req, res) => {
       }
 })
 
-// Update User's order Info by Id
-router.put('/:id', ensureAdmin, async (req, res) => {
-    try{
-        const updatedOrder = await Order.findByIdAndUpdate(req.params.id, {
-            $set: req.body,
-        },{new:true})
+// // Update User's order Info by Id
+// router.put('/:id', ensureAdmin, async (req, res) => {
+//     try{
+//         const updatedOrder = await Order.findByIdAndUpdate(req.params.id, {
+//             $set: req.body,
+//         },{new:true})
 
-        res.status(200).json(updatedOrder);
-    } catch(e){
-        res.json(500).json(e);
-    }
-});
+//         res.status(200).json(updatedOrder);
+//     } catch(e){
+//         res.json(500).json(e);
+//     }
+// });
 
 // Delete user's order by Id
-router.delete('/:id', ensureAdmin, async(req, res) => {
+router.delete('/:id', ensureCorrectUserOrAdmin, async(req, res) => {
     try{
         await Order.findByIdAndDelete(req.params.id)
         res.status(200).json('Product has been deleted')
@@ -99,7 +99,7 @@ router.get("/revenue", ensureAdmin, async (req, res) => {
     }
   });
 
-// Get user's order
+// // Get user's order
 router.get('/:userId', ensureCorrectUserOrAdmin, async(req, res) => {
     try{
         const order = await Order.find({userId: req.params.userId});

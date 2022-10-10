@@ -26,16 +26,24 @@ const cart = createSlice({
             );
             if (index >= 0) {
                 state.products[index].quantity += 1;
+                state.total += state.products[index].price;
             }
+
         },
         subtractOne: (state, action) => {
             const index = state.products.findIndex(
                 (item) => item._id === action.payload.id
             );
-            if (index >= 0 && state.products[index].quantity > 0) {
+
+            if (index >= 0 && state.products[index].quantity === 1){
+                state.quantity -= state.products[index].quantity;
+                state.total -= state.products[index].quantity * state.products[index].price;
+                state.products.splice(index, 1);
+            }else if (index >= 0 && state.products[index].quantity > 0) {
                 state.products[index].quantity -= 1;
                 state.quantity -= 1;
-            }
+                state.total -= state.products[index].price;
+            } 
         },
         removeOne:(state, action) => {
             const index = state.products.findIndex(
@@ -43,8 +51,9 @@ const cart = createSlice({
                 );
             if (index >= 0) {
                     state.quantity -= state.products[index].quantity;
-
+                    state.total -= state.products[index].quantity * state.products[index].price;
                     state.products.splice(index, 1);
+
             } else {
                     console.warn(
                       `Cant remove product (id: ${action.payload.id}) as its not in basket!`
