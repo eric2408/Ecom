@@ -12,8 +12,6 @@ router.put('/:id', ensureCorrectUserOrAdmin, async (req, res) => {
             $set: req.body,
         },{new:true})
 
-        console.log(updatedUser)
-
         res.status(200).json(updatedUser);
     } catch(e){
         res.json(500).json(e);
@@ -21,14 +19,14 @@ router.put('/:id', ensureCorrectUserOrAdmin, async (req, res) => {
 });
 
 // Delete a user by their Id
-router.delete('/:id', ensureCorrectUserOrAdmin, async(req, res) => {
-    try{
-        await User.findByIdAndDelete(req.params.id)
-        res.status(200).json('User has been deleted')
-    } catch(e){
-        res.json(500).json(e);
-    }
-});
+// router.delete('/:id', ensureCorrectUserOrAdmin, async(req, res) => {
+//     try{
+//         await User.findByIdAndDelete(req.params.id)
+//         res.status(200).json('User has been deleted')
+//     } catch(e){
+//         res.json(500).json(e);
+//     }
+// });
 
 // Get user statistics
 router.get("/stats", ensureAdmin, async (req, res) => {
