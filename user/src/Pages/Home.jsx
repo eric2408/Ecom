@@ -11,8 +11,7 @@ import { useSelector } from "react-redux";
 
 function Home() {
   const products = useSelector((state) => state.product.products);
-  // products.pop();
-  console.log(products)
+
   return (
     <div>
         <Announcement />

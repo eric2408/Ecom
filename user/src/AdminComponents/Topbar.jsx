@@ -75,7 +75,7 @@ function Topbar() {
                 <SettingsIcon />
             </Badge>
         </IconContainer>
-        <Img src={user.img}/>
+        {user && <Img src={user.img}/>}
       </TopRight>
     </TopbarWrapper>
   </Container>

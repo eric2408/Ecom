@@ -13,7 +13,7 @@ import StripeCheckout from "react-stripe-checkout";
 import { useEffect, useState } from "react";
 import { userRequest } from "../requestAxios";
 import { useNavigate } from 'react-router-dom';
-import robo from '../img/sq.png';
+import sq from '../img/sq.png';
 import { addOne, subtractOne, removeOne } from '../redux/cart';
 import { useDispatch } from 'react-redux';
 
@@ -271,7 +271,7 @@ const Cart = () => {
             {user ?
               <StripeCheckout
               name="Virtual Space"
-              image={robo}
+              image={sq}
               billingAddress
               shippingAddress
               description={`Your total is $${cart.total}`}

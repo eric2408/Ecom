@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`matches snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="sc-bcXHqe hcSMhq"
+  >
+    <div
+      class="sc-gswNZR iKdlqs"
+    >
+      <a
+        href="/"
+        style="text-decoration: none;"
+      >
+        <h1
+          class="sc-dkrFOg kua-DDI"
+        >
+          VIRTUAL SPACE
+        </h1>
+      </a>
+      <div
+        class="sc-hLBbgP iXUAhb"
+      >
+        <h1
+          class="sc-eDvSVe NQZch"
+        >
+          CREATE ACCOUNT
+        </h1>
+        <form
+          class="sc-jSUZER bWRCyx"
+        >
+          <input
+            class="sc-gKPRtg hnZDxq"
+            placeholder="Name"
+          />
+          <input
+            class="sc-gKPRtg hnZDxq"
+            placeholder="Last Name"
+          />
+          <input
+            class="sc-gKPRtg hnZDxq"
+            placeholder="Username"
+          />
+          <input
+            class="sc-gKPRtg hnZDxq"
+            placeholder="Email"
+          />
+          <input
+            class="sc-gKPRtg hnZDxq"
+            placeholder="Password"
+          />
+          <input
+            class="sc-gKPRtg hnZDxq"
+            placeholder="Confirm Password"
+          />
+          <span
+            class="sc-iBYQkv keDTqX"
+          >
+            By creating an account, I consent to the processing of my personal data in accordance with the 
+            <b>
+              PRIVACY POLICY
+            </b>
+          </span>
+          <button
+            class="sc-ftTHYK chdYYa"
+          >
+            CREATE
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</DocumentFragment>
+`;
