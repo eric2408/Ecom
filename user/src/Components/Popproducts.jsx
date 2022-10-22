@@ -36,7 +36,7 @@ function Popproducts() {
     useEffect(()=>{
       const getProducts = async () => {
         try{
-          const res = await axios.get('"http://3.83.51.198:8080/api/products/');
+          const res = await axios.get('http://3.83.51.198:8080/api/products/');
           setProducts(res.data)
         }catch(e){
   

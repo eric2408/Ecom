@@ -37,8 +37,8 @@ function ProductList({cat, filters, sort}) {
     const getProducts = async () => {
       try{
         const res = await axios.get(cat 
-          ? `"http://3.83.51.198:8080/api/products?category=${cat}` 
-          : '"http://3.83.51.198:8080/api/products/');
+          ? `http://3.83.51.198:8080/api/products?category=${cat}` 
+          : 'http://3.83.51.198:8080/api/products/');
         setProducts(res.data)
         console.log(res)
       }catch(e){
