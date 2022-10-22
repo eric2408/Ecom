@@ -87,14 +87,14 @@ Install with npm
 
 **Username:** joe
 
-**Password:** 1234
+**Password:** 123
 
 
 #User
 
 **Username:** steve
 
-**Password:** 123
+**Password:** 1234
 
 ## Demo
 
