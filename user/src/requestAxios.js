@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = "http://localhost:8080/api/";
+const BASE_URL = "http://3.83.51.198:8080/api/";
 let user;
 if (typeof window !== 'undefined') {
   user = JSON.parse(localStorage.getItem("persist:root"))?.user;
