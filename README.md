@@ -6,7 +6,7 @@ Online Virtual Reality goods e-commerce Store built using Backend Rest Api writt
 
 ## 🛠 Technologies
 
-**User:** React, Redux
+**User:** React, Redux, Firebase
 
 **Server:** Node, Express, Mongoose, JSON Web Token, Bcrypt
 
